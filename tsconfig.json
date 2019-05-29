@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "allowUnreachableCode": false,
+      "declaration": true,
+      "experimentalDecorators": true,
+      "lib": [
+        "dom",
+        "es2017"
+      ],
+      "moduleResolution": "node",
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "jsx": "react",
+      "jsxFactory": "h",
+      "outDir": "dist"
+    },
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }

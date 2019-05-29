@@ -1,0 +1,35 @@
+{
+    "name": "stencil-click-outside",
+    "version": "1.0.0",
+    "description": "Decorator for StencilJs to run annotated method on click outside of component.",
+    "main": "dist/index.js",
+    "module": "dist/esm/index.js",
+    "files": [
+      "dist/"
+    ],
+    "scripts": {
+      "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json"
+    },
+    "dependencies": {},
+    "devDependencies": {
+      "@stencil/core": "one",
+      "typescript": "^3.4.4"
+    },
+
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/jarrvis/stencil-click-outside.git"
+    },
+    "author": "Michał Kaliszewski",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/jarrvis/stencil-click-outside/issues"
+    },
+    "homepage": "https://github.com/jarrvis/stencil-click-outside",
+    "keywords": [
+      "Stencil",
+      "decorator",
+      "click",
+      "outside"
+    ]
+  }

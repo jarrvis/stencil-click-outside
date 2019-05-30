@@ -12,11 +12,10 @@ callback() {
  */
 export function ClickOutside() {
     return (proto: any, prop: any) => {
-        console.log(proto);
-        console.log(this);
-        const host = getElement(proto);
-        const { componentWillLoad } = proto;
-            proto.componentWillLoad = () => {
+        const { render } = proto;
+            proto.render = function() {
+                const renderResult = render.call(this);
+                const host = getElement(this);
                 window.addEventListener('click', (e: Event) => {
                     const target = e.target as HTMLElement;
                     if(!host.contains(target)) {
@@ -24,7 +23,7 @@ export function ClickOutside() {
                     }
                 }, false);
                 
-          return componentWillLoad && componentWillLoad.call(this);
+          return renderResult;
         };
     };
   }

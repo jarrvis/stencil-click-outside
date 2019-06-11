@@ -1,7 +1,13 @@
 import { getElement } from "@stencil/core";
-import { ComponentInstance } from "@stencil/core/dist/declarations";
+import {
+  ComponentInstance,
+  HTMLStencilElement
+} from "@stencil/core/dist/declarations";
 
-declare type ClickOutsideDecorator = (target: ComponentInstance, propertyKey: string) => void
+declare type ClickOutsideDecorator = (
+  target: ComponentInstance,
+  propertyKey: string
+) => void;
 
 /**
  * Call this function as soon as the click outside of annotated method's host is done.
@@ -36,15 +42,25 @@ export function ClickOutside(): ClickOutsideDecorator {
 </span>;
 ```
  */
-export function registerClickOutside(element: HTMLElement, callback: () => void): void {
-  window.addEventListener(
-    "click",
-    (e: Event) => {
-      const target = e.target as HTMLElement;
-      if (!element.contains(target)) {
-        callback.call(this);
-      }
-    },
-    false
-  );
+export function registerClickOutside(
+  element: HTMLClickOutsideElement,
+  callback: () => void
+): void {
+  if (!element.clickOutsideRegistered) {
+    window.addEventListener(
+      "click",
+      (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (!element.contains(target)) {
+          callback.call(this);
+        }
+      },
+      false
+    );
+    element.clickOutsideRegistered = true;
+  }
+}
+
+export interface HTMLClickOutsideElement extends HTMLStencilElement {
+  clickOutsideRegistered?: boolean;
 }

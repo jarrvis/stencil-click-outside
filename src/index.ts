@@ -26,7 +26,7 @@ export function ClickOutside(): ClickOutsideDecorator {
       const renderResult = render.call(this);
       const host = getElement(this);
       const method = this[methodName];
-      registerClickOutside(host, method);
+      registerClickOutside(this, host, method);
       return renderResult;
     };
   };
@@ -37,12 +37,13 @@ export function ClickOutside(): ClickOutsideDecorator {
  * @example
 ```
 <span 
-    ref={spanEl => registerClickOutside(spanEl, () => this.test())}>
+    ref={spanEl => registerClickOutside(this, spanEl, () => this.test())}>
       Hello, World!
 </span>;
 ```
  */
 export function registerClickOutside(
+  component: ComponentInstance,
   element: HTMLClickOutsideElement,
   callback: () => void
 ): void {
@@ -52,7 +53,7 @@ export function registerClickOutside(
       (e: Event) => {
         const target = e.target as HTMLElement;
         if (!element.contains(target)) {
-          callback.call(this);
+          callback.call(component);
         }
       },
       false

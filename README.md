@@ -49,7 +49,7 @@ export class MyComponent {
   render() { 
     return ( 
       <span 
-          ref={spanEl => registerClickOutside(spanEl, () => this.someMethod())}>
+          ref={spanEl => registerClickOutside(this, spanEl, () => this.someMethod())}>
             Hello, World!
       </span>;
     )

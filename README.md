@@ -22,6 +22,7 @@ import { ClickOutside } from "stencil-click-outside";
 
 @Component({ tag: "my-component", shadow: true })
 export class MyComponent {
+
   @ClickOutside()
   someMethod() {
     console.log(
@@ -59,7 +60,16 @@ export class MyComponent {
   }
 ```
 
+
 ## Options
+
+You may pass some optional parameters to decorator (or util function):
+
+```javascript
+@ClickOutside({
+    exclude: 'button .exclude-click-outside-class'
+})
+```
 
 | Property name   | Type   | Default   | Description                                                                                                                                    |
 | --------------- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |

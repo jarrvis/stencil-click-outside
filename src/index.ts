@@ -8,8 +8,8 @@ declare type ClickOutsideDecorator = (
 ) => void;
 
 declare interface ClickOutsideOptions {
-  triggerEvents: string;
-  exclude: string;
+  triggerEvents?: string;
+  exclude?: string;
 }
 
 const ClickOutsideOptionsDefaults: ClickOutsideOptions = {

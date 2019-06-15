@@ -1,6 +1,6 @@
 {
   "name": "stencil-click-outside",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Decorator for StencilJs to run annotated method on click outside of component.",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",

@@ -12,13 +12,9 @@ declare interface ClickOutsideOptions {
   exclude: string;
 }
 
-declare interface HTMLClickOutsideElement extends HTMLElement {
-  clickOutsideRegistered?: boolean;
-}
-
 const ClickOutsideOptionsDefaults: ClickOutsideOptions = {
   triggerEvents: "click",
-  exclude: null
+  exclude: ""
 };
 
 /**
@@ -39,7 +35,7 @@ export function ClickOutside(
     // lifecycle events not being called when not explicitly declared in at least one of components from bundle
     BUILD.cmpDidLoad = true;
     BUILD.cmpDidUnload = true;
-    
+
     const { componentDidLoad, componentDidUnload } = proto;
 
     proto.componentDidLoad = function() {
@@ -70,64 +66,51 @@ export function ClickOutside(
  */
 export function registerClickOutside(
   component: ComponentInstance,
-  element: HTMLClickOutsideElement,
+  element: HTMLElement,
   callback: () => void,
   opt: ClickOutsideOptions = ClickOutsideOptionsDefaults
 ): void {
-  if (!element.clickOutsideRegistered) {
-    getTriggerEvents(opt).forEach(triggerEvent => {
-      window.addEventListener(
-        triggerEvent,
-        (e: Event) => {
-          initClickOutside(e, component, element, callback);
-        },
-        false
-      );
-    });
-
-    element.clickOutsideRegistered = true;
-  }
+  const excludedNodes = getExcludedNodes(opt);
+  getTriggerEvents(opt).forEach(triggerEvent => {
+    window.addEventListener(
+      triggerEvent,
+      (e: Event) => {
+        initClickOutside(e, component, element, callback, excludedNodes);
+      },
+      false
+    );
+  });
 }
 
 /**
- * Register callback function for HTMLElement to be executed when user clicks outside of element.
- * @example
-```
-<span 
-    ref={spanEl => registerClickOutside(this, spanEl, () => this.test())}>
-      Hello, World!
-</span>;
-```
+ * Remove click outside callback function for HTMLElement.
  */
 export function removeClickOutside(
   component: ComponentInstance,
-  element: HTMLClickOutsideElement,
+  element: HTMLElement,
   callback: () => void,
   opt: ClickOutsideOptions = ClickOutsideOptionsDefaults
 ): void {
-  if (element.clickOutsideRegistered) {
-    getTriggerEvents(opt).forEach(triggerEvent => {
-      window.removeEventListener(
-        triggerEvent,
-        (e: Event) => {
-          initClickOutside(e, component, element, callback);
-        },
-        false
-      );
-    });
-
-    element.clickOutsideRegistered = false;
-  }
+  getTriggerEvents(opt).forEach(triggerEvent => {
+    window.removeEventListener(
+      triggerEvent,
+      (e: Event) => {
+        initClickOutside(e, component, element, callback);
+      },
+      false
+    );
+  });
 }
 
 function initClickOutside(
   event: Event,
   component: ComponentInstance,
   element: HTMLElement,
-  callback: () => void
+  callback: () => void,
+  excludedNodes?: Array<HTMLElement>
 ) {
   const target = event.target as HTMLElement;
-  if (!element.contains(target)) {
+  if (!element.contains(target) && !isExcluded(target, excludedNodes)) {
     callback.call(component);
   }
 }
@@ -137,4 +120,35 @@ function getTriggerEvents(opt: ClickOutsideOptions): Array<string> {
     return opt.triggerEvents.split(",").map(e => e.trim());
   }
   return ["click"];
+}
+
+function getExcludedNodes(opt: ClickOutsideOptions): Array<HTMLElement> {
+  if (opt.exclude) {
+    try {
+      return Array.from(document.querySelectorAll(this.exclude))
+    } catch (err) {
+      console.warn(
+        `@ClickOutside: Exclude: '${
+          this.exclude
+        }' will not be evaluated. Check your exclude selector syntax.`,
+        err
+      );
+    }
+  }
+  return;
+}
+
+function isExcluded(
+  target: HTMLElement,
+  excudedNodes?: Array<HTMLElement>
+): boolean {
+  if (target && excudedNodes) {
+    for (let excludedNode of excudedNodes) {
+      if (excludedNode.contains(target)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }

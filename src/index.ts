@@ -125,11 +125,11 @@ function getTriggerEvents(opt: ClickOutsideOptions): Array<string> {
 function getExcludedNodes(opt: ClickOutsideOptions): Array<HTMLElement> {
   if (opt.exclude) {
     try {
-      return Array.from(document.querySelectorAll(this.exclude))
+      return Array.from(document.querySelectorAll(opt.exclude))
     } catch (err) {
       console.warn(
         `@ClickOutside: Exclude: '${
-          this.exclude
+          opt.exclude
         }' will not be evaluated. Check your exclude selector syntax.`,
         err
       );

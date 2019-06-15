@@ -74,4 +74,4 @@ You may pass some optional parameters to decorator (or util function):
 | Property name   | Type   | Default   | Description                                                                                                                                    |
 | --------------- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `triggerEvents` | string | `'click'` | A comma-separated list of events to cause the trigger                                                                                          |
-| `exclude`       | string |           | A space-separated string of DOM element queries to exclude when clicking outside of the element. Example: `[exclude]="'button .btn-primary'"`. |
+| `exclude`       | string |           | A comma-separated string of DOM element queries to exclude when clicking outside of the element. Example: `[exclude]="'button .btn-primary'"`. |

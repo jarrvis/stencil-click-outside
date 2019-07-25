@@ -1,9 +1,9 @@
 import { getElement } from "@stencil/core";
-import { ComponentInstance } from "@stencil/core/dist/declarations";
+import { ComponentInterface } from "@stencil/core/dist/declarations";
 import { BUILD } from "@stencil/core/build-conditionals";
 
 declare type ClickOutsideDecorator = (
-  target: ComponentInstance,
+  target: ComponentInterface,
   propertyKey: string
 ) => void;
 
@@ -30,7 +30,7 @@ callback() {
 export function ClickOutside(
   opt: ClickOutsideOptions = ClickOutsideOptionsDefaults
 ): ClickOutsideDecorator {
-  return (proto: ComponentInstance, methodName: string) => {
+  return (proto: ComponentInterface, methodName: string) => {
     // this is to resolve the 'compiler optimization issue':
     // lifecycle events not being called when not explicitly declared in at least one of components from bundle
     BUILD.cmpDidLoad = true;
@@ -58,14 +58,14 @@ export function ClickOutside(
  * Register callback function for HTMLElement to be executed when user clicks outside of element.
  * @example
 ```
-<span 
+<span
     ref={spanEl => registerClickOutside(this, spanEl, () => this.test())}>
       Hello, World!
 </span>;
 ```
  */
 export function registerClickOutside(
-  component: ComponentInstance,
+  component: ComponentInterface,
   element: HTMLElement,
   callback: () => void,
   opt: ClickOutsideOptions = ClickOutsideOptionsDefaults
@@ -86,7 +86,7 @@ export function registerClickOutside(
  * Remove click outside callback function for HTMLElement.
  */
 export function removeClickOutside(
-  component: ComponentInstance,
+  component: ComponentInterface,
   element: HTMLElement,
   callback: () => void,
   opt: ClickOutsideOptions = ClickOutsideOptionsDefaults
@@ -104,7 +104,7 @@ export function removeClickOutside(
 
 function initClickOutside(
   event: Event,
-  component: ComponentInstance,
+  component: ComponentInterface,
   element: HTMLElement,
   callback: () => void,
   excludedNodes?: Array<HTMLElement>

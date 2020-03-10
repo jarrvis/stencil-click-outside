@@ -1,6 +1,4 @@
-import { getElement } from "@stencil/core";
-import { ComponentInterface } from "@stencil/core/dist/declarations";
-import { BUILD } from "@stencil/core/build-conditionals";
+import { Build as BUILD, ComponentInterface, getElement } from '@stencil/core';
 
 declare type ClickOutsideDecorator = (
   target: ComponentInterface,
@@ -33,8 +31,8 @@ export function ClickOutside(
   return (proto: ComponentInterface, methodName: string) => {
     // this is to resolve the 'compiler optimization issue':
     // lifecycle events not being called when not explicitly declared in at least one of components from bundle
-    BUILD.cmpDidLoad = true;
-    BUILD.cmpDidUnload = true;
+    (BUILD as any).cmpDidLoad = true;
+    (BUILD as any).cmpDidUnload = true;
 
     const { componentDidLoad, componentDidUnload } = proto;
 

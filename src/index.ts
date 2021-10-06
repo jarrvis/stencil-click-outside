@@ -31,23 +31,23 @@ export function ClickOutside(
   return (proto: ComponentInterface, methodName: string) => {
     // this is to resolve the 'compiler optimization issue':
     // lifecycle events not being called when not explicitly declared in at least one of components from bundle
-    (BUILD as any).cmpDidLoad = true;
-    (BUILD as any).cmpDidUnload = true;
+    (BUILD as any).connectedCallback = true;
+    (BUILD as any).disconnectedCallback = true;
 
-    const { componentDidLoad, componentDidUnload } = proto;
+    const { connectedCallback, disconnectedCallback } = proto;
 
-    proto.componentDidLoad = function() {
+    proto.connectedCallback = function() {
       const host = getElement(this);
       const method = this[methodName];
       registerClickOutside(this, host, method, opt);
-      return componentDidLoad && componentDidLoad.call(this);
+      return connectedCallback && connectedCallback.call(this);
     };
 
-    proto.componentDidUnload = function() {
+    proto.disconnectedCallback = function() {
       const host = getElement(this);
       const method = this[methodName];
       removeClickOutside(this, host, method, opt);
-      return componentDidUnload && componentDidUnload.call(this);
+      return disconnectedCallback && disconnectedCallback.call(this);
     };
   };
 }
